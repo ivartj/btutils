@@ -15,11 +15,11 @@ char *freadall(FILE *in, size_t *rlen)
 	cap = 256;
 	out = malloc(cap);
 
-	while((inc = fread(out + len, 1, cap - len, in)) > 0) {
+	while((inc = fread(out + len, 1, cap - len -1, in)) > 0) {
 		len += inc;
-		if(len == cap) {
+		if(len + 1 == cap) {
 			cap *= 2;
-			out = realloc(out, cap + 1);
+			out = realloc(out, cap);
 		}
 	}
 
