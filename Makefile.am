@@ -1,4 +1,8 @@
-bin_PROGRAMS = btih
+bin_PROGRAMS = btih bturl
 btih_SOURCES = btih.c
 btih_LDADD = $(CRYPTO_LIBS) $(BENCODING_LIBS)
 btih_CFLAGS = $(CRYPTO_CFLAGS) $(BENCODING_CFLAGS)
+
+bturl = bturl.c
+bturl_LDADD = $(CRYPTO_LIBS) $(BENCODING_LIBS)
+bturl_CFLAGS = $(CRYPTO_CFLAGS) $(BENCODING_CFLAGS)

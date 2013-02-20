@@ -34,12 +34,12 @@ char *freadall(FILE *in, size_t *rlen)
 int main(int argc, char *argv[])
 {
 	char *benstring;
-	size_t benstringlen;
+	char *hash;
+	char *infostr;
 	bencode_val *benval;
 	bencode_val *info;
-	char *infostr;
+	size_t benstringlen;
 	size_t infostrlen;
-	char *hash;
 	size_t hashlen;
 	int i;
 	FILE *file;
