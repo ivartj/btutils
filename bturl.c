@@ -51,7 +51,7 @@ char *metainfo_urlinfohash(bencode_val *metainfo, size_t *rlen)
 	size_t len;
 	int i;
 
-	info = bencode_dict_get(metainfo, "info");
+	info = bencode_dict_get((bencode_dict *)metainfo, "info");
 	if(info == NULL)
 		return NULL;
 
@@ -99,7 +99,10 @@ int main(int argc, char *argv[])
 
 	benstr = freadall(file, &benstrlen);
 
+	fclose(file);
+
 	metainfo = bencode_parse(benstr, benstrlen);
+	free(benstr);
 	if(metainfo == NULL) {
 		fprintf(stderr, "Failed to parse bencoding.\n");
 		exit(EXIT_FAILURE);
@@ -118,6 +121,9 @@ int main(int argc, char *argv[])
 	}
 
 	printf("%s?info_hash=%s\n", announce, urlinfohash);
+
+	free(urlinfohash);
+	bencode_free_recursive(metainfo);
 
 	exit(EXIT_SUCCESS);
 }
