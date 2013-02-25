@@ -91,7 +91,7 @@ int main(int argc, char *argv[])
 		exit(EXIT_FAILURE);
 	}
 
-	file = fopen(argv[1], "r");
+	file = fopen(argv[1], "rb");
 	if(file == NULL) {
 		fprintf(stderr, "Failed  to open file.\n");
 		exit(EXIT_FAILURE);
