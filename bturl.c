@@ -45,7 +45,7 @@ char *metainfo_urlinfohash(bencode_val *metainfo, size_t *rlen)
 	bencode_val *info;
 	char *infostr;
 	size_t infostrlen;
-	char *hash;
+	unsigned char *hash;
 	size_t hashlen;
 	char *out;
 	size_t len;

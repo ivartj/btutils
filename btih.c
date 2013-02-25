@@ -34,7 +34,7 @@ char *freadall(FILE *in, size_t *rlen)
 int main(int argc, char *argv[])
 {
 	char *benstring;
-	char *hash;
+	unsigned char *hash;
 	char *infostr;
 	bencode_val *benval;
 	bencode_val *info;
