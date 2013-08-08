@@ -2,8 +2,50 @@
 #include <ivartj/crypto.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <getopt.h>
 
-static char *freadall(FILE *in, size_t *rlen);
+char *infile = NULL;
+FILE *in = NULL;
+
+void usage(FILE *out)
+{
+	fprintf(out, "usage: bturl <torrent-file>\n");
+}
+
+void parseargs(int argc, char *argv[])
+{
+	int c;
+	static struct option longopts[] = {
+		{ "help", no_argument, NULL, 'h' },
+		{ 0, 0, 0, 0 },
+	};
+
+	while((c = getopt_long(argc, argv, "h", longopts, NULL)) != -1)
+	switch(c) {
+	case 'h':
+		usage(stdout);
+		exit(EXIT_SUCCESS);
+	case '?':
+		usage(stderr);
+		exit(EXIT_FAILURE);
+	}
+
+	switch(argc - optind) {
+	case '1':
+		infile = argv[optind];
+		break;
+	default:
+		usage(stderr);
+		exit(EXIT_FAILURE);
+	}
+}
+
+void openfile(void)
+{
+	in = fopen(infile, "rb");
+	if(in == NULL)
+		perror("fopen");
+}
 
 char *freadall(FILE *in, size_t *rlen)
 {
@@ -79,27 +121,16 @@ char *metainfo_urlinfohash(bencode_val *metainfo, size_t *rlen)
 
 int main(int argc, char *argv[])
 {
-	FILE *file;
 	char *benstr;
 	size_t benstrlen;
 	bencode_val *metainfo;
 	const char *announce;
 	char *urlinfohash;
 
-	if(argc != 2) {
-		fprintf(stderr, "Usage: btget <torrent-file>\n");
-		exit(EXIT_FAILURE);
-	}
+	parseargs(argc, argv);
+	openfile();
 
-	file = fopen(argv[1], "rb");
-	if(file == NULL) {
-		fprintf(stderr, "Failed  to open file.\n");
-		exit(EXIT_FAILURE);
-	}
-
-	benstr = freadall(file, &benstrlen);
-
-	fclose(file);
+	benstr = freadall(in, &benstrlen);
 
 	metainfo = bencode_parse(benstr, benstrlen);
 	free(benstr);
