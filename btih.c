@@ -43,8 +43,10 @@ void parseargs(int argc, char *argv[])
 void openfile(void)
 {
 	in = fopen(infile, "rb");
-	if(in == NULL)
+	if(in == NULL) {
 		perror("fopen");
+		exit(EXIT_FAILURE);
+	}
 }
 
 static char *freadall(FILE *in, size_t *rlen);
